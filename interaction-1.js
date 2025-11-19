@@ -53,7 +53,37 @@ function accelerationChange(accx, accy, accz) {
   // playAudio()
 }
 
-function rotationChange(rotx, roty, rotz) {}
+function rotationChange(rotx, roty, rotz) {
+  if (!dspNode) return;
+
+  const now = millis();
+
+  if (lastRotZ === null) {
+    lastRotZ = rotz;
+    lastTime = now;
+    return;
+  }
+
+  // Compute rotation difference
+  let deltaZ = rotz - lastRotZ;
+  // Handle wrap-around at 360°
+  if (deltaZ > 180) deltaZ -= 360;
+  if (deltaZ < -180) deltaZ += 360;
+
+  const deltaTime = (now - lastTime) / 1000; // seconds
+  const angularSpeed = Math.abs(deltaZ / deltaTime); // deg/s
+
+  // Map speed to 0–1 for volume (adjust 720 if needed)
+  const normalizedVolume = Math.min(angularSpeed / 720, 1);
+
+  // Set Faust parameters (engine sound)
+  dspNode.setParamValue("/engine/gate", 1); // trigger sound
+  dspNode.setParamValue("/engine/volume", normalizedVolume); // scale volume with speed
+
+  // Update last values
+  lastRotZ = rotz;
+  lastTime = now;
+}
 
 function mousePressed() {
   playAudio();
@@ -69,9 +99,9 @@ function deviceTurned() {
   threshVals[1] = turnAxis;
 }
 function deviceShaken() {
-  shaketimer = millis();
-  statusLabels[0].style("color", "pink");
-  playAudio();
+  //  shaketimer = millis();
+  //statusLabels[0].style("color", "pink");
+  //playAudio();
 }
 
 function getMinMaxParam(address) {
