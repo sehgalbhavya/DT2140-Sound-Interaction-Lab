@@ -64,7 +64,7 @@ function accelerationChange(accx, accy, accz) {
     // If falling long enough → trigger sound
     else if (millis() - freeFallStart > FREEFALL_TIME) {
       playAudio(); // ring bell
-      freeFallStart = null; // reset
+      freeFallStart = 1; // reset
     }
   } else {
     // Not falling anymore → reset
@@ -75,7 +75,7 @@ function accelerationChange(accx, accy, accz) {
 function rotationChange(rotx, roty, rotz) {}
 
 function mousePressed() {
-  playAudio();
+  // playAudio();
   // Use this for debugging from the desktop!
 }
 
