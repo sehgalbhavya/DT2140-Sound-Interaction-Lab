@@ -1,0 +1,296 @@
+{
+    "name": "engine",
+    "filename": "engine.dsp",
+    "version": "2.79.3",
+    "compile_options": "-lang wasm-i -ct 1 -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 2",
+    "library_list": [
+        "/usr/share/faust/stdfaust.lib",
+        "/usr/share/faust/basics.lib",
+        "/usr/share/faust/maths.lib",
+        "/usr/share/faust/platform.lib",
+        "/usr/share/faust/noises.lib",
+        "/usr/share/faust/filters.lib",
+        "/usr/share/faust/oscillators.lib",
+        "/usr/share/faust/reverbs.lib",
+        "/usr/share/faust/delays.lib"
+    ],
+    "include_pathnames": [
+        "/share/faust",
+        "/usr/local/share/faust",
+        "/usr/share/faust",
+        "."
+    ],
+    "size": 844600,
+    "inputs": 0,
+    "outputs": 2,
+    "meta": [
+        {
+            "basics.lib/name": "Faust Basic Element Library"
+        },
+        {
+            "basics.lib/version": "1.21.0"
+        },
+        {
+            "compile_options": "-lang wasm-i -ct 1 -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 2"
+        },
+        {
+            "delays.lib/name": "Faust Delay Library"
+        },
+        {
+            "delays.lib/version": "1.1.0"
+        },
+        {
+            "filename": "engine.dsp"
+        },
+        {
+            "filters.lib/allpass_comb:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/allpass_comb:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/allpass_comb:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/bandpass0_bandstop1:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/bandpass0_bandstop1:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/bandpass0_bandstop1:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/bandpass:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/bandpass:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/bandpass:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/dcblocker:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/dcblocker:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/dcblocker:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/fir:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/fir:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/fir:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/iir:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/iir:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/iir:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/lowpass0_highpass1": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/name": "Faust Filters Library"
+        },
+        {
+            "filters.lib/pole:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/pole:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/pole:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/tf2sb:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/tf2sb:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/tf2sb:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "filters.lib/version": "1.7.1"
+        },
+        {
+            "filters.lib/zero:author": "Julius O. Smith III"
+        },
+        {
+            "filters.lib/zero:copyright": "Copyright (C) 2003-2019 by Julius O. Smith III <jos@ccrma.stanford.edu>"
+        },
+        {
+            "filters.lib/zero:license": "MIT-style STK-4.3 license"
+        },
+        {
+            "maths.lib/author": "GRAME"
+        },
+        {
+            "maths.lib/copyright": "GRAME"
+        },
+        {
+            "maths.lib/license": "LGPL with exception"
+        },
+        {
+            "maths.lib/name": "Faust Math Library"
+        },
+        {
+            "maths.lib/version": "2.8.1"
+        },
+        {
+            "name": "engine"
+        },
+        {
+            "noises.lib/name": "Faust Noise Generator Library"
+        },
+        {
+            "noises.lib/version": "1.4.1"
+        },
+        {
+            "oscillators.lib/lf_sawpos:author": "Bart Brouns, revised by Stéphane Letz"
+        },
+        {
+            "oscillators.lib/lf_sawpos:licence": "STK-4.3"
+        },
+        {
+            "oscillators.lib/name": "Faust Oscillator Library"
+        },
+        {
+            "oscillators.lib/sawN:author": "Julius O. Smith III"
+        },
+        {
+            "oscillators.lib/sawN:license": "STK-4.3"
+        },
+        {
+            "oscillators.lib/version": "1.6.0"
+        },
+        {
+            "platform.lib/name": "Generic Platform Library"
+        },
+        {
+            "platform.lib/version": "1.3.0"
+        },
+        {
+            "reverbs.lib/mono_freeverb:author": "Romain Michon"
+        },
+        {
+            "reverbs.lib/name": "Faust Reverb Library"
+        },
+        {
+            "reverbs.lib/stereo_freeverb:author": "Romain Michon"
+        },
+        {
+            "reverbs.lib/version": "1.4.0"
+        }
+    ],
+    "ui": [
+        {
+            "type": "vgroup",
+            "label": "engine",
+            "items": [
+                {
+                    "type": "hslider",
+                    "label": "brushLevel",
+                    "varname": "fHslider3",
+                    "shortname": "brushLevel",
+                    "address": "/engine/brushLevel",
+                    "index": 262268,
+                    "init": 0.9,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                },
+                {
+                    "type": "checkbox",
+                    "label": "gate",
+                    "varname": "fCheckbox0",
+                    "shortname": "gate",
+                    "address": "/engine/gate",
+                    "index": 262164
+                },
+                {
+                    "type": "hslider",
+                    "label": "maxSpeed",
+                    "varname": "fHslider4",
+                    "shortname": "maxSpeed",
+                    "address": "/engine/maxSpeed",
+                    "index": 262392,
+                    "init": 0.3,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                },
+                {
+                    "type": "hslider",
+                    "label": "rotorLevel",
+                    "varname": "fHslider2",
+                    "shortname": "rotorLevel",
+                    "address": "/engine/rotorLevel",
+                    "index": 262204,
+                    "init": 0.6,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                },
+                {
+                    "type": "hslider",
+                    "label": "runtime",
+                    "varname": "fHslider1",
+                    "shortname": "runtime",
+                    "address": "/engine/runtime",
+                    "index": 262184,
+                    "init": 5,
+                    "min": 0,
+                    "max": 20,
+                    "step": 0.01
+                },
+                {
+                    "type": "hslider",
+                    "label": "statorLevel",
+                    "varname": "fHslider5",
+                    "shortname": "statorLevel",
+                    "address": "/engine/statorLevel",
+                    "index": 262428,
+                    "init": 0.7,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                },
+                {
+                    "type": "hslider",
+                    "label": "tubeRes",
+                    "varname": "fHslider6",
+                    "shortname": "tubeRes",
+                    "address": "/engine/tubeRes",
+                    "index": 262432,
+                    "init": 0.2,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                },
+                {
+                    "type": "hslider",
+                    "label": "volume",
+                    "varname": "fHslider0",
+                    "shortname": "volume",
+                    "address": "/engine/volume",
+                    "index": 262160,
+                    "init": 0.5,
+                    "min": 0,
+                    "max": 1,
+                    "step": 0.01
+                }
+            ]
+        }
+    ]
+}
