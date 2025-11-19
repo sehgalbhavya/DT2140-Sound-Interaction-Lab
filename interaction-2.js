@@ -54,25 +54,20 @@ bells.createDSP(audioContext, 1024).then((node) => {
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
-  if (isNaN(accx) || isNaN(accy) || isNaN(accz)) {
-    return;
-  }
-
-  // Calculate magnitude of acceleration vector
   const magnitude = Math.sqrt(accx * accx + accy * accy + accz * accz);
 
-  // Free fall happens near magnitude 0–3 (instead of 9.8)
-  const isFalling = magnitude < FREEFALL_THRESHOLD;
-
-  if (isFalling) {
+  // If below threshold → possible free-fall
+  if (magnitude < FREEFALL_THRESHOLD) {
     if (freeFallStart === null) {
-      freeFallStart = millis(); // start timing the fall
-    } else if (millis() - freeFallStart > FREEFALL_TIME) {
-      console.log("FREE FALL DETECTED");
-      playAudio(); // trigger sound
-      freeFallStart = null; // reset after detection
+      freeFallStart = millis(); // start timer
+    }
+    // If falling long enough → trigger sound
+    else if (millis() - freeFallStart > FREEFALL_TIME) {
+      playAudio(); // ring bell
+      freeFallStart = null; // reset
     }
   } else {
+    // Not falling anymore → reset
     freeFallStart = null; // reset if not falling
   }
 }
