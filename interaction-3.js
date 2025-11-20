@@ -100,18 +100,17 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio(positionValue) {
+function playAudio() {
   if (!dspNode) {
     return;
   }
   if (audioContext.state === "suspended") {
     return;
   }
-
-  // 5. SET PARAMETER
-  // We send the value received from rotationChange to the Faust engine
-  // Based on your DSP file, the address is "/door/position"
-  dspNode.setParamValue("/door/position", positionValue);
+  dspNode.setParamValue("/englishBell/gate", 1);
+  setTimeout(() => {
+    dspNode.setParamValue("/englishBell/gate", 0);
+  }, 100);
 }
 
 //==========================================================================================

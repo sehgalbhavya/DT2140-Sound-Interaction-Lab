@@ -1,17 +1,14 @@
 //==========================================================================================
 // AUDIO SETUP
 //------------------------------------------------------------------------------------------
-//
-//------------------------------------------------------------------------------------------
-// Edit just where you're asked to!
-//------------------------------------------------------------------------------------------
-//
+// Interaction 2: Bell triggered by Free Fall (>30cm)
 //==========================================================================================
 let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
 
-// Change here to ("tuono") depending on your wasm file name
+// 1. SET DSP NAME
+// Ensure 'bells.wasm' exists in your wasm folder
 const dspName = "bells";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
@@ -24,7 +21,7 @@ if (typeof module === "undefined") {
   module.exports = exp;
 }
 
-// The name should be the same as the WASM file, so change tuono with brass if you use brass.wasm
+// 2. INITIALIZE DSP
 bells.createDSP(audioContext, 1024).then((node) => {
   dspNode = node;
   dspNode.connect(audioContext.destination);
@@ -32,10 +29,6 @@ bells.createDSP(audioContext, 1024).then((node) => {
   const jsonString = dspNode.getJSON();
   jsonParams = JSON.parse(jsonString)["ui"][0]["items"];
   dspNodeParams = jsonParams;
-  // const exampleMinMaxParam = findByAddress(dspNodeParams, "/thunder/rumble");
-  // // ALWAYS PAY ATTENTION TO MIN AND MAX, ELSE YOU MAY GET REALLY HIGH VOLUMES FROM YOUR SPEAKERS
-  // const [exampleMinValue, exampleMaxValue] = getParamMinMax(exampleMinMaxParam);
-  // console.log('Min value:', exampleMinValue, 'Max value:', exampleMaxValue);
 });
 
 //==========================================================================================
@@ -49,13 +42,47 @@ bells.createDSP(audioContext, 1024).then((node) => {
 //
 //==========================================================================================
 
-function accelerationChange(accx, accy, accz) {}
+// GLOBAL VARIABLES FOR FALL DETECTION
+let isFalling = false;
+let fallStartTime = 0;
 
-function rotationChange(rotx, roty, rotz) {}
+function accelerationChange(accx, accy, accz) {
+  // 3. CALCULATE TOTAL ACCELERATION (Magnitude)
+  // Normal resting magnitude is ~9.8 m/s^2 (gravity)
+  // In free fall, this drops effectively to 0.
+  let magnitude = Math.sqrt(accx * accx + accy * accy + accz * accz);
+
+  // 4. DETECT FREE FALL STATE
+  // We use a threshold of 3.0 to account for sensor noise.
+  if (magnitude < 3.0) {
+    if (!isFalling) {
+      isFalling = true;
+      fallStartTime = millis(); // Start the timer
+    }
+  } else {
+    // 5. DETECT IMPACT (End of fall)
+    if (isFalling) {
+      let fallDuration = millis() - fallStartTime;
+
+      // 6. CHECK THE "30 CM" RULE
+      // It takes approx 247ms to fall 30cm.
+      // If the fall lasted longer than 250ms, we trigger the sound.
+      if (fallDuration > 250) {
+        playAudio();
+      }
+
+      // Reset logic
+      isFalling = false;
+    }
+  }
+}
+
+function rotationChange(rotx, roty, rotz) {
+  // Not used for this interaction
+}
 
 function mousePressed() {
-  // playAudio();
-  // Use this for debugging from the desktop!
+  playAudio(); // Debugging: Test sound with mouse click
 }
 
 function deviceMoved() {
@@ -66,15 +93,15 @@ function deviceMoved() {
 function deviceTurned() {
   threshVals[1] = turnAxis;
 }
+
 function deviceShaken() {
   shaketimer = millis();
   statusLabels[0].style("color", "pink");
-  //playAudio();
 }
 
 function getMinMaxParam(address) {
+  if (!dspNodeParams) return [0, 1];
   const exampleMinMaxParam = findByAddress(dspNodeParams, address);
-  // ALWAYS PAY ATTENTION TO MIN AND MAX, ELSE YOU MAY GET REALLY HIGH VOLUMES FROM YOUR SPEAKERS
   const [exampleMinValue, exampleMaxValue] = getParamMinMax(exampleMinMaxParam);
   console.log("Min value:", exampleMinValue, "Max value:", exampleMaxValue);
   return [exampleMinValue, exampleMaxValue];
@@ -97,7 +124,12 @@ function playAudio() {
   if (audioContext.state === "suspended") {
     return;
   }
+
+  // 7. TRIGGER THE BELL
+  // Gate 1 starts the sound, Gate 0 releases it.
   dspNode.setParamValue("/englishBell/gate", 1);
+
+  // Turn off the gate quickly to let the bell ring out naturally
   setTimeout(() => {
     dspNode.setParamValue("/englishBell/gate", 0);
   }, 100);
