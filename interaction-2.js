@@ -11,10 +11,6 @@ let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
 
-let freeFallStart = null;
-const FREEFALL_THRESHOLD = 2; // acceleration below this = falling
-const FREEFALL_TIME = 250;
-
 // Change here to ("tuono") depending on your wasm file name
 const dspName = "bells";
 const instance = new FaustWasm2ScriptProcessor(dspName);
@@ -53,24 +49,7 @@ bells.createDSP(audioContext, 1024).then((node) => {
 //
 //==========================================================================================
 
-function accelerationChange(accx, accy, accz) {
-  const magnitude = Math.sqrt(accx * accx + accy * accy + accz * accz);
-
-  // If below threshold → possible free-fall
-  if (magnitude < FREEFALL_THRESHOLD) {
-    if (freeFallStart === null) {
-      freeFallStart = millis(); // start timer
-    }
-    // If falling long enough → trigger sound
-    else if (millis() - freeFallStart > FREEFALL_TIME) {
-      playAudio(); // ring bell
-      freeFallStart = 1; // reset
-    }
-  } else {
-    // Not falling anymore → reset
-    freeFallStart = null; // reset if not falling
-  }
-}
+function accelerationChange(accx, accy, accz) {}
 
 function rotationChange(rotx, roty, rotz) {}
 
