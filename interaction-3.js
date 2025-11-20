@@ -1,14 +1,18 @@
 //==========================================================================================
 // AUDIO SETUP
 //------------------------------------------------------------------------------------------
-// interaction-3.js: Creaking Door controlled by Y-axis Tilt
+//
+//------------------------------------------------------------------------------------------
+// Edit just where you're asked to!
+//------------------------------------------------------------------------------------------
+//
 //==========================================================================================
 let dspNode = null;
 let dspNodeParams = null;
 let jsonParams = null;
 
 // 1. SET DSP NAME
-// This must match your .wasm filename (door.wasm)
+// Change here to ("door") to match your wasm file name
 const dspName = "door";
 const instance = new FaustWasm2ScriptProcessor(dspName);
 
@@ -21,14 +25,12 @@ if (typeof module === "undefined") {
   module.exports = exp;
 }
 
-// 2. LOAD DSP
-// We use 'door.createDSP' assuming the global object matches the filename
+// 2. INITIALIZE DSP
+// We change 'brass.createDSP' to 'door.createDSP'
 door.createDSP(audioContext, 1024).then((node) => {
   dspNode = node;
   dspNode.connect(audioContext.destination);
-
-  console.log("params: ", dspNode.getParams()); // Check console to verify /door/position
-
+  console.log("params: ", dspNode.getParams());
   const jsonString = dspNode.getJSON();
   jsonParams = JSON.parse(jsonString)["ui"][0]["items"];
   dspNodeParams = jsonParams;
@@ -37,7 +39,12 @@ door.createDSP(audioContext, 1024).then((node) => {
 //==========================================================================================
 // INTERACTIONS
 //------------------------------------------------------------------------------------------
-// Using Rotation (Y-axis) to control the Door
+//
+//------------------------------------------------------------------------------------------
+// Edit the next functions to create interactions
+// Decide which parameters you're using and then use playAudio to play the Audio
+//------------------------------------------------------------------------------------------
+//
 //==========================================================================================
 
 function accelerationChange(accx, accy, accz) {
@@ -45,33 +52,20 @@ function accelerationChange(accx, accy, accz) {
 }
 
 function rotationChange(rotx, roty, rotz) {
-  if (!dspNode) return;
+  // 3. CALCULATE VALUES HERE
+  // We use 'roty' (Pitch/Roll axis) to control the door.
+  // Map 0 degrees (flat) to 60 degrees (tilted) to the range 0.0 -> 0.5
+  // The 'true' parameter clamps the value so it doesn't go below 0 or above 0.5
+  let doorPosition = map(roty, 0, 60, 0, 0.5, true);
 
-  // 3. DEFINE PARAMETER
-  // Based on your dsp code: hslider("v:door/position"...)
-  const paramAddress = "/door/position";
-
-  // 4. MAP ROTATION TO SOUND
-  // roty (Roll) usually ranges from -90 to 90 (or -180 to 180 depending on device)
-  // Let's assume 0 is flat, and tilting right (positive) opens the door.
-
-  // map(value, inputMin, inputMax, outputMin, outputMax, [clamp])
-  // We map 0 to 60 degrees of tilt -> to 0.0 to 0.5 (the DSP slider range)
-  // 'true' clamps the value so it doesn't exceed the limits if you tilt further
-  let doorValue = map(roty, 0, 60, 0, 0.5, true);
-
-  // Filter out small accidental movements (deadzone)
-  if (doorValue < 0.01) doorValue = 0;
-
-  // Send value to Faust
-  dspNode.setParamValue(paramAddress, doorValue);
+  // 4. CALL PLAYAUDIO
+  // We pass the calculated value to the audio function
+  playAudio(doorPosition);
 }
 
 function mousePressed() {
-  // Debugging: print current values when you click mouse
-  if (dspNode) {
-    console.log("Current Params:", dspNode.getParams());
-  }
+  // Debugging: simulate opening the door halfway with a mouse click
+  playAudio(0.25);
 }
 
 function deviceMoved() {
@@ -98,10 +92,26 @@ function getMinMaxParam(address) {
 
 //==========================================================================================
 // AUDIO INTERACTION
+//------------------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------------------
+// Edit here to define your audio controls
+//------------------------------------------------------------------------------------------
+//
 //==========================================================================================
 
-function playAudio(val) {
-  // Audio is driven continuously by rotationChange, so this is empty
+function playAudio(positionValue) {
+  if (!dspNode) {
+    return;
+  }
+  if (audioContext.state === "suspended") {
+    return;
+  }
+
+  // 5. SET PARAMETER
+  // We send the value received from rotationChange to the Faust engine
+  // Based on your DSP file, the address is "/door/position"
+  dspNode.setParamValue("/door/position", positionValue);
 }
 
 //==========================================================================================
