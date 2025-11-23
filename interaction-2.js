@@ -103,7 +103,7 @@ function playAudio() {
 
   // CHANGE THIS if your parameter name is different.
   // Look in the console output from dspNode.getParams().
-  const gateAddress = "/churchBell/gate";
+  const gateAddress = "/englishBell/gate";
 
   dspNode.setParamValue(gateAddress, 1);
   setTimeout(() => {
